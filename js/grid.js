@@ -1,4 +1,5 @@
 var Grid = function(size) {
+  this.size  = size;
   this.cells = [];
 
   for(x=0; x<size; x++) {
@@ -8,3 +9,10 @@ var Grid = function(size) {
     }
   }
 };
+
+Grid.prototype.print = function() {
+  for(x=0; x<this.size; x++) {
+    var values = this.cells[x].map(function(cell) {return cell.value});
+    console.log(values.join("\t"));
+  }
+}
