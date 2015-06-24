@@ -21,12 +21,14 @@ Grid.prototype.print = function() {
   }
 }
 
-Grid.prototype.set_random_cells = function(number_of_cells) {
+Grid.prototype.set_random_cells = function(number_of_cells, two_or_four) {
+  two_or_four = typeof(two_or_four) != "undefined";
   for(i=0; i<number_of_cells; i++) {
     var empty_cells = this.empty_cells(); //calling it inside the loop removes the chance of setting the same cell again
     if(empty_cells.length) {
       var random = Math.floor(Math.random() * empty_cells.length);
-      empty_cells[random].value = 2;
+      var number = two_or_four ? ((Math.floor(Math.random() * 2) + 1) * 2) : 2; //Select a 2 or 4 if two_or_four otherwise 2
+      empty_cells[random].value = number;
     }
   }
 }
