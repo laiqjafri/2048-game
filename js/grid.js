@@ -94,55 +94,20 @@ Grid.prototype.merge = function(x, y, horizontal, step) {
 }
 
 Grid.prototype.move = function(direction) {
-  var merged = false;
-  if(direction == "left") {
-    var horizontal = true;
-    var step = 1;
-    for(y=0; y<this.size; y++) {
-      var x = 0;
-      while(x < this.size) {
-        var merge_action = this.merge(x, y, horizontal, step);
-        x += merge_action.increment;
-        merged = merged || merge_action.merged;
-      }
-    }
-  } else if(direction == "right") {
-    var horizontal = true;
-    var step = -1;
-    for(y=0; y<this.size; y++) {
-      var x = this.size - 1;
-      while(x >= 0) {
-        var merge_action = this.merge(x, y, horizontal, step);
-        x -= merge_action.increment;
-        merged = merged || merge_action.merged;
-      }
-    }
-  } else if(direction == "up") {
-    var horizontal = false;
-    var step = 1;
-    for(x=0; x<this.size; x++) {
-      var y = 0;
-      while(y < this.size) {
-        var merge_action = this.merge(x, y, horizontal, step);
-        y += merge_action.increment;
-        merged = merged || merge_action.merged;
-      }
-    }
-  } else if(direction == "down") {
-    var horizontal = false;
-    var step = -1;
-    for(x=0; x<this.size; x++) {
-      var y = this.size - 1;
-      while(y >= 0) {
-        var merge_action = this.merge(x, y, horizontal, step);
-        y -= merge_action.increment;
-        merged = merged || merge_action.merged;
-      }
+  var merged      = false;
+  var horizontal  = direction == "left" || direction == "right";
+  var step        = direction == "up"   || direction == "left" ? 1 : -1;
+  var inner_start = direction == "left" || direction == "up"   ? 0 : (this.size - 1);
+  var inner_end   = inner_start == 0 ? this.size : -1;
+  for(outer = 0; outer < this.size; outer++) {
+    var inner = inner_start;
+    while(inner != inner_end) {
+      var merge_action = horizontal ? this.merge(inner, outer, horizontal, step) : this.merge(outer, inner, horizontal, step);
+      inner += (merge_action.increment * step);
+      merged = merged || merge_action.merged;
     }
   }
 
-  if(merged) {
-    this.set_random_cells(1);
-  }
+  if(merged) { this.set_random_cells(1); }
   this.print();
 }
