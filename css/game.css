@@ -1,0 +1,10 @@
+.tile {
+  font-size: 40px;
+  font-weight: bold;
+  border: 1px dashed black;
+}
+
+.score-label {
+  font-size: 50px;
+  padding-bottom: 25px;
+}
