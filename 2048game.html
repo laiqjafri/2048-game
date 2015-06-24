@@ -4,6 +4,7 @@
     <title>2048 Game</title>
     <script src="js/jquery/jquery-1.11.3.min.js"></script>
     <script src="js/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/bootstrap/bootstrap.min.js"></script>
     <script src="js/cell.js"></script>
     <script src="js/grid.js"></script>
     <script src="js/game.js"></script>
@@ -24,6 +25,31 @@
         </div>
       </div>
       <div id="grid"></div>
+    </div>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg margin-top-normal" data-toggle="modal" data-target="#instructions" id="instructions-btn">
+      Instructions
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="instructions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Instructions</h4>
+          </div>
+          <div class="modal-body">
+            <p>Use arrow keys to manoeuvre the grid</p>
+            <p>Match tiles with similar numbers to add them up</p>
+            <p>Turn a tile to show 2048, and you WIN</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
