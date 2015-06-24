@@ -1,6 +1,7 @@
 var Grid = function(size) {
   this.size  = size;
   this.cells = [];
+  this.score = 0;
 
   for(x=0; x<size; x++) {
     this.cells.push([]);
@@ -73,6 +74,7 @@ Grid.prototype.merge = function(x, y, horizontal, step) {
       if(this.cells[x][y].value == this.cells[point.x][point.y].value) {
         //if values are same, merge them into one cell and double the value
         this.cells[x][y].value              *= 2;
+        this.score                          += this.cells[x][y].value;
         this.cells[point.x][point.y].value   = 0;
         return {merged: true, increment: 1};
       } else {
@@ -111,5 +113,19 @@ Grid.prototype.move = function(direction) {
   }
 
   if(merged) { this.set_random_cells(1); }
-  this.print();
+  this.render_html();
+}
+
+Grid.prototype.render_html = function() {
+  var html = "";
+  for(y=0; y<this.size; y++) {
+    var row = "<tr>";
+    for(x=0; x<this.size; x++) {
+      row += ("<td>" + this.cells[x][y].value + "</td>");
+    }
+    row += "</tr>";
+    html += row;
+    $("#grid").html(html);
+    $("#score").html(this.score);
+  }
 }
