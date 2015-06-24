@@ -1,5 +1,7 @@
 var Game = function(size) {
-  this.grid = new Grid(size);
+  this.ended = false;
+  this.won   = false;
+  this.grid  = new Grid(size, this);
   this.init();
 }
 
@@ -27,4 +29,25 @@ Game.prototype.init = function() {
         console.log("Please use arrow keys to play");
     }
   });
+  $('#new-game').click(function(e) {
+    e.preventDefault();
+    location.reload();
+    return false;
+  });
+}
+
+Game.prototype.check_status = function(last_merged_status) {
+  var cells = this.grid.all_cells();
+  for(i=0; i<cells.length; i++) {
+    if(cells[i].value == 2048) {
+      this.won = true;
+      alert("YAY!!! Victory");
+      return;
+    }
+  }
+  var empty_cells = this.grid.empty_cells();
+  if(empty_cells.length == 0 && !last_merged_status) {
+    alert("Game Over!!!");
+    return;
+  }
 }

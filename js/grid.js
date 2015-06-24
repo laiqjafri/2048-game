@@ -1,4 +1,4 @@
-var Grid = function(size) {
+var Grid = function(size, game) {
   this.size  = size;
   this.cells = [];
   this.score = 0;
@@ -9,7 +9,18 @@ var Grid = function(size) {
       this.cells[x].push(new Cell());
     }
   }
+  this.game = game;
 };
+
+Grid.prototype.all_cells = function() {
+  var cells = [];
+  for(x=0; x<this.size; x++) {
+    for(y=0; y<this.size; y++) {
+      cells.push(this.cells[x][y]);
+    }
+  }
+  return cells;
+}
 
 Grid.prototype.print = function() {
   for(y=0; y<this.size; y++) {
@@ -114,6 +125,7 @@ Grid.prototype.move = function(direction) {
 
   if(merged) { this.set_random_cells(1); }
   this.render_html();
+  this.game.check_status(merged);
 }
 
 Grid.prototype.render_html = function() {
