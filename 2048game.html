@@ -2,11 +2,13 @@
 <html>
   <html>
     <title>2048 Game</title>
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/jquery/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery/jquery-migrate-1.2.1.min.js"></script>
     <script src="js/cell.js"></script>
     <script src="js/grid.js"></script>
     <script src="js/game.js"></script>
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/game.css" rel="stylesheet" type="text/css">
     <script>
       $(document).ready(function() {
         new Game(4);
@@ -14,7 +16,12 @@
     </script>
   </html>
   <body>
-    <table id="grid" border="1"></table>
-    <div id="score"></div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 score-label">Score: <span id="score" class="score-label"></span></div>
+      </div>
+      <div id="grid">
+      </div>
+    </div>
   </body>
 </html>
