@@ -1,7 +1,6 @@
-var Grid = function(size, game) {
+var Grid = function(size) {
   this.size  = size;
   this.cells = [];
-  this.score = 0;
 
   for(x=0; x<size; x++) {
     this.cells.push([]);
@@ -9,7 +8,6 @@ var Grid = function(size, game) {
       this.cells[x].push(new Cell());
     }
   }
-  this.game = game;
 };
 
 Grid.prototype.all_cells = function() {
@@ -85,7 +83,7 @@ Grid.prototype.merge = function(x, y, horizontal, step) {
       if(this.cells[x][y].value == this.cells[point.x][point.y].value) {
         //if values are same, merge them into one cell and double the value
         this.cells[x][y].value              *= 2;
-        this.score                          += this.cells[x][y].value;
+        Game.score                          += this.cells[x][y].value;
         this.cells[point.x][point.y].value   = 0;
         return {merged: true, increment: 1};
       } else {
@@ -125,7 +123,7 @@ Grid.prototype.move = function(direction) {
 
   if(merged) { this.set_random_cells(1); }
   this.render_html();
-  this.game.check_status(merged);
+  Game.check_status(merged);
 }
 
 Grid.prototype.render_html = function() {
@@ -142,7 +140,7 @@ Grid.prototype.render_html = function() {
     row += "</div>";
     html += row;
     $("#grid").html(html);
-    $("#score").html(this.score);
+    $("#score").html(Game.score);
     var colors = {
       '0'    : '#FFFAFA',
       '2'    : '#FFFAF0',
