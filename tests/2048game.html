@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>2048 Game Tests</title>
+    <link rel="stylesheet" href="qunit/css/qunit-1.18.0.css">
+    <script src="qunit/js/qunit-1.18.0.js"></script>
+    <script src="qunit/js/sinon-1.15.0.js"></script>
+    <script src="../js/jquery/jquery-1.11.3.min.js"></script>
+    <script src="../js/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/bootstrap/bootstrap.min.js"></script>
+    <script src="../js/cell.js"></script>
+    <script src="../js/grid.js"></script>
+    <script src="../js/game.js"></script>
+  </head>
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+      QUnit.module("Cell", {
+        beforeEach: function() {
+          this.cell = new Cell();
+        }
+      });
+      QUnit.test("a cell", function(assert) {
+        assert.equal(this.cell.value, 0, "A cell should be initialized with value = 0.");
+      });
+
+      QUnit.module("Grid", {
+        beforeEach: function() {
+          this.grid = new Grid(4);
+        }
+      });
+      QUnit.test("new", function(assert) {
+        assert.equal(this.grid.size, 4, "Grid size should be properly set to 4");
+        assert.equal(this.grid.cells.length, 4, "This will return the rows count equal to 4");
+        for(i = 0; i < this.grid.size; i++) {
+          assert.equal(this.grid.cells[i].length, 4, "This will check columns count for row @ " + (i + 1) + " equals 4");
+        }
+      });
+      QUnit.test("all_cells", function(assert) {
+        var all_cells = this.grid.all_cells();
+        assert.equal(all_cells.length, 16, "Check grid cells count equal to 16");
+        for(i = 0; i < all_cells.length; i++) {
+          assert.equal(all_cells[i].value, 0, "Cell @ " + (i + 1) + " initialized to 0");
+        }
+      });
+      QUnit.test("empty_cells and set_random_cells", function(assert) {
+        assert.equal(this.grid.empty_cells().length, 16, "All 16 cells empty after grid initialization");
+        this.grid.set_random_cells(2);
+        assert.equal(this.grid.empty_cells().length, 14, "14 cells empty after setting up 2 random cells");
+        this.grid.set_random_cells(5);
+        assert.equal(this.grid.empty_cells().length, 9, "9 cells empty after setting up another 5 random cells");
+        this.grid.set_random_cells(9, true); //All cells set randomly
+        var all_cells = this.grid.all_cells();
+        for(i = 0; i < all_cells.length; i++) {
+          //All cells must be initialized to 2 or 4
+          assert.ok((all_cells[i].value == 2 || all_cells[i].value == 4), "Cell set randomly but properly")
+        }
+      });
+
+      QUnit.module("Grid + Game", {
+        beforeEach: function() {
+          Game.init(4);
+          this.grid = Game.grid;
+          var cells = this.grid.all_cells();
+          for(i = 0; i < cells.length; i++) {
+            //Empty all cells for test purposes
+            cells[i].value = 0;
+          }
+        }
+      });
+      QUnit.test("move", function(assert) {
+        //MOVING LEFT
+        this.grid.cells[0][0].value = 2;
+        this.grid.cells[1][0].value = 4;
+        assert.equal(this.grid.empty_cells().length, 14, "There should be 14 empty cells before moving left");
+        this.grid.move("left");
+        assert.equal(this.grid.empty_cells().length, 14, "There should still be 14 empty cells because the move was not valid")
+        assert.ok(this.grid.cells[0][0].value, 2, "This cell will remain the same");
+        assert.ok(this.grid.cells[1][0].value, 4, "This cell will remain the same");
+
+        //MOVING UP
+        this.grid.cells[0][1].value = 2;
+        assert.equal(this.grid.empty_cells().length, 13, "There should be 13 empty cells before moving up");
+        this.grid.move("up");
+        assert.equal(this.grid.empty_cells().length, 13, "There should stull be 13 empty cells after moving up. Because 2 cells merged");
+        assert.equal(this.grid.cells[0][0].value, 4, "Cell(0,0) should be doubled");
+      });
+      QUnit.test("move again", function(assert) {
+        this.grid.cells[0][1].value = 2;
+        this.grid.cells[1][0].value = 2;
+        assert.equal(this.grid.empty_cells().length, 14, "There should be 14 empty cells before moving down");
+        this.grid.move("down");
+        assert.equal(this.grid.empty_cells().length, 13, "There should be 13 empty cells after moving down")
+      });
+      QUnit.test("game won/over", function(assert) {
+        var stub = sinon.stub(window, "alert", function(msg) { return false; } );
+        assert.notOk(Game.over, "Game is not over yet");
+        this.grid.cells[0][0].value = 2;
+        this.grid.cells[1][0].value = 1024;
+        this.grid.cells[2][0].value = 8;
+        this.grid.cells[3][0].value = 16;
+        this.grid.cells[0][1].value = 32;
+        this.grid.cells[1][1].value = 64;
+        this.grid.cells[2][1].value = 128;
+        this.grid.cells[3][1].value = 256;
+        this.grid.cells[0][2].value = 2;
+        this.grid.cells[1][2].value = 4;
+        this.grid.cells[2][2].value = 8;
+        this.grid.cells[3][2].value = 16;
+        this.grid.cells[0][3].value = 64;
+        this.grid.cells[1][3].value = 128;
+        this.grid.cells[2][3].value = 256;
+        this.grid.cells[3][3].value = 512;
+        assert.notOk(Game.won, "Game is not won yet");
+        this.grid.move("left");
+        assert.ok(Game.over, "However, the game is over");
+
+        this.grid.cells[0][0].value = 1024;
+        this.grid.move("left");
+        assert.ok(Game.won, "The game is won now");
+      });
+    </script>
+  </body>
+</html>
