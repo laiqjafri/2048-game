@@ -10,7 +10,7 @@ var Game = {
     Game.size  = size;
     Game.grid  = new Grid(Game.size);
     Game.won   = false;
-    Game.ended = false;
+    Game.over  = false;
     Game.score = 0;
     if(bind_events) {
       Game.bind_keys();
@@ -23,6 +23,10 @@ var Game = {
   bind_keys : function() {
     $(document).keyup(function(e) {
       e.preventDefault();
+      if(Game.won || Game.over) {
+        Game.check_status(false);
+        return true;
+      }
       var key = e.which;
       switch(key) {
         case 37:
