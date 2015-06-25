@@ -23,11 +23,17 @@ var Game = {
   bind_keys : function() {
     $(document).keyup(function(e) {
       e.preventDefault();
+      var key = e.which;
+      if([37, 38, 39, 40].indexOf(key) == -1) {
+        $('#instructions-link').click();
+        return true;
+      }
+
       if(Game.won || Game.over) {
         Game.check_status(false);
         return true;
       }
-      var key = e.which;
+
       switch(key) {
         case 37:
           Game.grid.move("left");
@@ -44,6 +50,7 @@ var Game = {
         default:
           console.log("Please use arrow keys to play");
       }
+      return true;
     });
   },
 
