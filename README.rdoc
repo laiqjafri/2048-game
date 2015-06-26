@@ -7,7 +7,7 @@ Info:: {Github}[http://github.com/laiqjafri/2048-game]
 Bugs:: {Issues}[http://github.com/laiqjafri/2048-game/issues]
 
 == Installation
-  https://github.com/laiqjafri/2048-game.git
+  git clone https://github.com/laiqjafri/2048-game.git
   cd 2048-game
 
 == Play
