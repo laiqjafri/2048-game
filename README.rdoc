@@ -1,0 +1,19 @@
+= 2048 Game
+
+My version of {2048 Game}[2048game.com]
+
+Author:: Laiq Jafri
+Info:: {Github}[http://github.com/laiqjafri/2048-game]
+Bugs:: {Issues}[http://github.com/laiqjafri/2048-game/issues]
+
+== Installation
+  https://github.com/laiqjafri/2048-game.git
+  cd 2048-game
+
+== Play
+
+Open 2048game.html in your browser and enjoy!!
+
+== Tests
+
+Open tests/2048game.html in the browser to see tests
