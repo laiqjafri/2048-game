@@ -139,24 +139,24 @@ Grid.prototype.render_html = function() {
     }
     row += "</div>";
     html += row;
-    $("#grid").html(html);
-    $("#score").html(Game.score);
-    var colors = {
-      '0'    : '#FFFAFA',
-      '2'    : '#FFFAF0',
-      '4'    : '#FFFACD',
-      '8'    : '#FA8072',
-      '16'   : '#F4A460',
-      '32'   : '#F08080',
-      '64'   : '#E9967A',
-      '128'  : '#DAA520',
-      '256'  : '#D2B48C',
-      '512'  : '#D2691E',
-      '1024' : '#B8860B',
-      '2048' : '#B22222',
-    };
-    $(".tile").each(function(index, tile) {
-      $(tile).css('background-color', colors[$(tile).data('number')])
-    });
   }
+  $("#grid").html(html);
+  $("#score").html(Game.score);
+  var colors = {
+    '0'    : '#FFFAFA',
+    '2'    : '#FFFAF0',
+    '4'    : '#FFFACD',
+    '8'    : '#FA8072',
+    '16'   : '#F4A460',
+    '32'   : '#F08080',
+    '64'   : '#E9967A',
+    '128'  : '#DAA520',
+    '256'  : '#D2B48C',
+    '512'  : '#D2691E',
+    '1024' : '#B8860B',
+    '2048' : '#B22222',
+  };
+  $(".tile").each(function(index, tile) {
+    $(tile).css('background-color', colors[$(tile).data('number')])
+  });
 }
