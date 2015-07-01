@@ -121,6 +121,34 @@
         this.grid.move("left");
         assert.ok(Game.won, "The game is won now");
       });
+      QUnit.test("cells filled but game not over", function(assert) {
+        this.grid.cells[0][0].value = 2;
+        this.grid.cells[1][0].value = 1024;
+        this.grid.cells[2][0].value = 8; //can be merged
+        this.grid.cells[3][0].value = 16;
+        this.grid.cells[0][1].value = 32;
+        this.grid.cells[1][1].value = 64;
+        this.grid.cells[2][1].value = 8; //with this one
+        this.grid.cells[3][1].value = 256;
+        this.grid.cells[0][2].value = 2;
+        this.grid.cells[1][2].value = 4;
+        this.grid.cells[2][2].value = 32;
+        this.grid.cells[3][2].value = 16;
+        this.grid.cells[0][3].value = 64;
+        this.grid.cells[1][3].value = 128;
+        this.grid.cells[2][3].value = 256;
+        this.grid.cells[3][3].value = 512;
+        assert.notOk(Game.over, "Game is not over yet");
+        this.grid.move("left");
+        assert.notOk(Game.over, "Game is not over yet");
+        assert.equal(Game.grid.empty_cells.length, 0, "No empty cells but game not over, because I can move up or down");
+        this.grid.move("up");
+        assert.notOk(Game.over, "Game is not over yet");
+        assert.equal(this.grid.cells[2][0].value, 16, "This cell should be merged");
+        assert.ok(this.grid.cells[2][1].value == 32, "This cell should have the value in the lower");
+        assert.ok(this.grid.cells[2][2].value == 256, "This cell should have the value in the lower");
+        assert.ok(this.grid.cells[2][3].value == 2 || this.grid.cells[2][3].value == 4, "This cell now, should have a random value set");
+      });
     </script>
   </body>
 </html>

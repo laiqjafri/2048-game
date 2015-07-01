@@ -64,6 +64,7 @@ var Game = {
 
   check_status : function(last_merged_status) {
     var cells = Game.grid.all_cells();
+    var size  = Game.size;
     for(i=0; i<cells.length; i++) {
       if(cells[i].value == 2048) {
         Game.won = true;
@@ -72,10 +73,22 @@ var Game = {
       }
     }
     var empty_cells = Game.grid.empty_cells();
-    if(empty_cells.length == 0 && !last_merged_status) {
+    if(empty_cells.length == 0) {
+      for(i=0; i<cells.length; i++) {
+        var left_cell  = typeof(cells[i-1])    == "undefined" ? 0 : cells[i-1].value
+        var right_cell = typeof(cells[i+1])    == "undefined" ? 0 : cells[i+1].value
+        var up_cell    = typeof(cells[i-size]) == "undefined" ? 0 : cells[i-size].value
+        var down_cell  = typeof(cells[i+size]) == "undefined" ? 0 : cells[i+size].value
+        if(left_cell == cells[i].value ||
+            right_cell == cells[i].value ||
+            up_cell == cells[i].value ||
+            down_cell == cells[i].value) {
+          return;
+        }
+      }
       Game.over = true;
       alert("Game Over!!!");
-      return;
     }
+    return;
   },
 };
